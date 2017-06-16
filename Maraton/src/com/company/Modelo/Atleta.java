@@ -19,7 +19,8 @@ public class Atleta implements Comparable<Atleta>,Comparator<Atleta> {
     private String club;
     private int edad;
     private String categoria;
-    private Date tiempo = new Date();
+    private Marca marca = new Marca();
+
 
     // constructor
 
@@ -40,7 +41,7 @@ public class Atleta implements Comparable<Atleta>,Comparator<Atleta> {
         setNacionalidad(nacionalidad);
         setClub(club);
         setEdad(edad);
-        pedirTiempo();
+        this.marca.pedirTiempo();
     }
 
     public Atleta(String nombre, String apellido, String apellido2, int dorsal, String sexo, String nacionalidad, String club, int edad, int horas, int min, int seg) {
@@ -52,7 +53,7 @@ public class Atleta implements Comparable<Atleta>,Comparator<Atleta> {
         setNacionalidad(nacionalidad);
         setClub(club);
         setEdad(edad);
-        this.tiempo = pedirTiempo(horas, min, seg);
+        this.marca = new Marca(horas, min, seg);
     }
 
 
@@ -87,13 +88,6 @@ public class Atleta implements Comparable<Atleta>,Comparator<Atleta> {
         return dorsal;
     }
 
-    public Date getTiempo() {
-        return tiempo;
-    }
-
-    public void setTiempo(Date tiempo) {
-        this.tiempo = tiempo;
-    }
 
     /**
      * controlo que el valor introducido en el dorsal no sea menor de cero
@@ -127,7 +121,7 @@ public class Atleta implements Comparable<Atleta>,Comparator<Atleta> {
      * @param nacionalidad
      */
     public void setNacionalidad(String nacionalidad) {
-        if (nacionalidad.length() < 4) {
+        if (nacionalidad.length() > 4) {
 
             this.nacionalidad = " ";
 
@@ -200,53 +194,6 @@ public class Atleta implements Comparable<Atleta>,Comparator<Atleta> {
 
     //metodos
 
-    /**
-     * pedimos el tiempo de marca al usuario el cual lo debera introducir en horas, minutos, segundos
-     *
-     * @return tiempo Date
-     */
-    public Date pedirTiempo() {
-        Scanner scanner = new Scanner(System.in);
-
-        int horas, minutos, seg;
-
-        System.out.println("introduzca el tiepo del recorrido");
-
-
-        System.out.println("introduzca las horas");
-        tiempo.setHours(horas = scanner.nextInt());
-
-        System.out.println("introduzca los min");
-        tiempo.setMinutes(minutos = scanner.nextInt());
-
-        System.out.println("introduzca los segundos");
-        tiempo.setSeconds(seg = scanner.nextInt());
-
-
-        return tiempo;
-
-
-    }
-
-    /**
-     * metodo sobrecargado el cual se usa ara cuando harcodeamos los atletas
-     *
-     * @param horas   int
-     * @param minutos int
-     * @param seg     int
-     * @return tiempo Date
-     */
-    private Date pedirTiempo(int horas, int minutos, int seg) {
-
-        tiempo.setHours(horas);
-        tiempo.setMinutes(minutos);
-        tiempo.setSeconds(seg);
-
-
-        return tiempo;
-
-
-    }
 
 
     /**
@@ -265,8 +212,8 @@ public class Atleta implements Comparable<Atleta>,Comparator<Atleta> {
                 ", club='" + getClub() + '\'' +
                 ", edad=" + getEdad() +
                 ", categoria='" + getCategoria() + '\'' +
-                ", marca='" + ((tiempo.getHours() >= 6) ? "mas de 6 horas en la carrera":
-                    (tiempo.getHours() + ":" + tiempo.getMinutes() + ":" + tiempo.getSeconds()));
+                ", marca='" + ((marca.getHoras() >= 6) ? "mas de 6 horas en la carrera":
+                    marca.toString());
     }
 
 
@@ -305,13 +252,47 @@ public class Atleta implements Comparable<Atleta>,Comparator<Atleta> {
         return Objects.equals(j.getDorsal(),this.getDorsal());
     }
 
-    /**
-     * ordena de mayor  a menor tiempo de tiempo en relizar el recorrido
-     * @param o
-     * @return int
-     */
     @Override
     public int compareTo(Atleta o) {
-        return (int) (o.getTiempo().getTime() - this.getTiempo().getTime());
+
+        if (o.marca.getHoras() > this.marca.getHoras()){
+
+            return -1;
+
+        }else  if (o.marca.getHoras() < this.marca.getHoras()){
+
+            return 1;
+
+        }else{
+
+            if (o.marca.getMin() > this.marca.getMin()){
+
+                return -1;
+
+            }else  if (o.marca.getMin() < this.marca.getMin()){
+
+                return 1;
+
+            }else{
+
+                if (o.marca.getSeg() > this.marca.getSeg()){
+
+                    return- 1;
+
+                }else  if (o.marca.getSeg() < this.marca.getSeg()){
+
+                    return 1;
+
+                }else{
+
+                    return 0;
+
+                }
+
+            }
+
+        }
     }
+
+
 }

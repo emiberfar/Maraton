@@ -1,15 +1,12 @@
 package com.company.Modelo;
 
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.InputMismatchException;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * Created by EBF10 on 14/06/2017.
  */
-public class ListaAtletas {
+public class ListaAtletas{
 
     private ArrayList<Atleta> atletas;
 
@@ -38,27 +35,23 @@ public class ListaAtletas {
 
     }
 
-    /**
-     * muestra una lista de los atletas que estan en el array
-     */
+
+
     public void mostrarAtletas(){
 
-        for (int i = 0; i < atletas.size() ; i++) {
+        for (Atleta atleta: atletas) {
 
-
-            System.out.println((i+1) + " " + atletas.get(i).toString()+ "(" +
-                    (diferenciaDeTiempo(atletas.get(i)).getHours()+ ":" + diferenciaDeTiempo(atletas.get(i)).getMinutes()+
-                            ":" + diferenciaDeTiempo(atletas.get(i)).getSeconds() +")"));
+            System.out.println(atleta.toString());
 
         }
 
+
     }
-
-
-
-
-
-    public int bucarAtleta(){
+    /**
+     * buaca un altleta a traves de su dorsal
+     * @return
+     */
+    private int bucarAtleta(){
         Scanner scanner = new Scanner(System.in);
 
         Atleta buscar = new Atleta(0);
@@ -105,7 +98,7 @@ public class ListaAtletas {
      */
     public void buscarAtletaPedido(){
 
-        atletas.get(bucarAtleta());
+        System.out.println(atletas.get(bucarAtleta()));
 
     }
 
@@ -135,16 +128,20 @@ public class ListaAtletas {
 
         do {
             System.out.println("introduce el apelido 1");
-            nuevo.setNombre(scanner.nextLine().replaceAll("\\s+", " "));
-        }while (nuevo.getNombre().equals(" "));
+            nuevo.setApellido(scanner.nextLine().replaceAll("\\s+", " "));
+        }while (nuevo.getApellido().equals(" "));
 
 
         System.out.println("introduce el apellido 2, si no tiene introduzca un espacio en blanco");
-        nuevo.setNombre(scanner.nextLine().replaceAll("\\s+", " "));
+        nuevo.setApellido2(scanner.nextLine().replaceAll("\\s+", " "));
 
 
         nuevo.setDorsal(introduceDorsal());
 
+        do {
+            System.out.println("introduce la nacionalidad con el codigo de 3 letras de su pais");
+            nuevo.setNacionalidad(scanner.nextLine().replaceAll("\\s+", " "));
+        }while (nuevo.getNombre().equals(" ") || nuevo.getNacionalidad().length() > 4);
 
         do {
             System.out.println("sexo del participante");
@@ -160,12 +157,30 @@ public class ListaAtletas {
 
         nuevo.setEdad(introducirEdad());
 
-        nuevo.pedirTiempo();
+
 
         return nuevo;
 
 
 
+
+    }
+
+    /**
+     * ordena por las mejor marca realizada de menos tiempo a mas
+     */
+    public void ordenarMarcas(){
+
+        Collections.sort(atletas );
+
+    }
+
+    /**
+     * ordena por los dorsales que han sido asigndos de menor a mayor
+     */
+    public void ordenarDorsal(){
+
+        Collections.sort(atletas, new Atleta());
 
     }
 
@@ -175,49 +190,8 @@ public class ListaAtletas {
     //helper
 
 
-    /**
-     * nos muestra cual es la mejor marca entre los atletas que tenemos
-     * @return tipo fecha
-     */
-    private Date mejorMarca(){
-
-        Date marca = new Date();
-
-        marca.setTime(Integer.MAX_VALUE);
-
-        for (Atleta atleta: atletas) {
-
-            if ( marca.getTime() > atleta.getTiempo().getTime() ){
-
-                marca = atleta.getTiempo();
-
-            }
-
-        }
 
 
-        return marca;
-
-    }
-
-    /**
-     * calcula la diferencia de tiempo con la mejor marca
-     * @param atleta
-     * @return tipo date
-     */
-    private Date diferenciaDeTiempo(Atleta atleta){
-
-        Date diferencia = new Date();
-
-        int tiempo = (int) (atleta.getTiempo().getTime() - mejorMarca().getTime());
-
-        diferencia.setHours(tiempo/(60*60*24));
-        diferencia.setMinutes(tiempo/(60*60));
-        diferencia.setSeconds(tiempo/(60));
-
-        return diferencia;
-
-    }
 
     /**
      * introduce el un dorsal de atleta el cual no esta duplicado
@@ -302,5 +276,8 @@ public class ListaAtletas {
         }
 
     }
+
+
+
 
 }

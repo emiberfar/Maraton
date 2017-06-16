@@ -9,9 +9,13 @@ public class Main {
 
         ListaAtletas a = new ListaAtletas();
 
-        a.atletaNuevo();
+        a.introducirAtletasInscritos();
+
+        a.borrarAtleta();
 
         a.mostrarAtletas();
+
+
 
     }
 }
