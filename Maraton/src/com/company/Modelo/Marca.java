@@ -1,12 +1,15 @@
 package com.company.Modelo;
 
 
+import java.io.Serializable;
 import java.util.Scanner;
 
 /**
  * Created by emilio on 16/06/2017.
  */
-public class Marca {
+public class Marca implements Serializable{
+
+    private static final long serialVersionUID = -2196807447451159L;
 
     private int horas,min,seg;
 
@@ -58,7 +61,7 @@ public class Marca {
      */
     public void setMin(int min) {
 
-        if (min > 60 || min < 0){
+        if (min > 60 ){
 
             this.min = 0;
 
@@ -80,7 +83,7 @@ public class Marca {
     public void setSeg(int seg) {
 
 
-        if(seg > 60 || seg < 0){
+        if(seg > 60 ){
 
             this.seg = 0;
 
@@ -105,44 +108,33 @@ public class Marca {
         Scanner scanner = new Scanner(System.in);
 
 
-
-
-
         System.out.println("introduzca el tiepo del recorrido");
 
 
-        do {
 
-            System.out.println("introduzca las horas");
-            this.setHoras(scanner.nextInt());
-
-        }while (getHoras() > 24 || getHoras() < 0);
+        System.out.println("introduzca las horas");
+        this.setHoras(scanner.nextInt());
 
 
-        do {
-
-            System.out.println("introduzca los min");
-            this.setMin(scanner.nextInt());
-
-        }while(getMin() > 60 || getMin() < 0);
+        System.out.println("introduzca los min");
+        this.setMin(scanner.nextInt());
 
 
-        do {
+        System.out.println("introduzca los segundos");
+        this.setSeg(scanner.nextInt());
 
-            System.out.println("introduzca los segundos");
-            this.setSeg(scanner.nextInt());
-
-        }while (getSeg() > 60 || getSeg() < 0);
 
 
 
 
     }
-
 
 
     @Override
     public String toString() {
         return  ""+horas + ":" + min + ":" + seg ;
     }
+
+
+
 }

@@ -1,6 +1,7 @@
 package com.company.Modelo;
 
 
+import java.io.*;
 import java.util.*;
 
 /**
@@ -26,24 +27,66 @@ public class ListaAtletas{
      */
     public void introducirAtletasInscritos(){
 
+        borrarNull();
 
         atletas.add(new Atleta("pepe", "rodrigez", "fernandez",7 , "masculino","esl","corre forest corre", 26,3,25,42));
         atletas.add(new Atleta("manolo", "figueroa", "valuarte",795 , "masculino","esp","tu fast tu furious", 18,4,35,10));
-        atletas.add(new Atleta("ana", "lopez", "mascaro",123 , "femenino","usa","gran turismo", 42,4,50,25));
+        atletas.add(new Atleta("ana", "lopez", "mascaro",123 , "femenino","usa","gran turismo", 42,4,6,25));
         atletas.add(new Atleta("pepa", "martinez", "flor",2369 , "femenino","and","need for speed", 58,1,8,59));
 
+        guardarFichero();
 
     }
 
 
+    /**
+         * muestra los atletas que estan el array
+         */
+    public void mostrarAtletas() {
 
-    public void mostrarAtletas(){
+        borrarNull();
+        for (Atleta atleta : atletas) {
+
+            posicionGeneral(atleta);
+
+            System.out.println(atleta.toString() + diferenciaMarca(atleta) + "\n");
+
+
+        }
+    }
+
+        /**
+         * muestra los atletas dependiendo de la categoria
+         */
+    public void mostrarAtletas(String categoria){
+
+        Scanner scanner = new Scanner(System.in);
+
+        String sexo;
+
+        borrarNull();
 
         for (Atleta atleta: atletas) {
 
-            System.out.println(atleta.toString());
+            posicionGeneral(atleta);
 
-        }
+            if ( atleta.getCategoria().toLowerCase().equals(categoria.toLowerCase() ) ) {
+
+                System.out.println("introduzca masculino o femenino de pendiendo del sexo que quiera ver la calificafion");
+                System.out.println("sino escriba general");
+               if ( atleta.getSexo().toLowerCase().equals( ( sexo = scanner.nextLine().toLowerCase().replaceAll("\\s+", " ") ) ) ){
+
+                   System.out.println(atleta.toString() + diferenciaMarca(atleta) + "\n");
+
+               }else if (sexo.equals("general")){
+
+                   System.out.println( atleta.toString() + diferenciaMarca( atleta ) + "\n" );
+
+               }
+
+            }
+
+       }
 
 
     }
@@ -81,6 +124,9 @@ public class ListaAtletas{
 
         atletas.remove(bucarAtleta());
 
+
+        borrarNull();
+        guardarFichero();
     }
 
 
@@ -91,6 +137,8 @@ public class ListaAtletas{
 
         atletas.set(bucarAtleta(),recienIscrito());
 
+        borrarNull();
+        guardarFichero();
     }
 
     /**
@@ -108,7 +156,10 @@ public class ListaAtletas{
      */
     public void atletaNuevo(){
 
+        borrarNull();
         atletas.add(recienIscrito());
+        guardarFichero();
+
 
     }
     /**
@@ -123,13 +174,13 @@ public class ListaAtletas{
         do {
             System.out.println("introduce el nombre");
             nuevo.setNombre(scanner.nextLine().replaceAll("\\s+", " "));
-        }while (nuevo.getNombre().equals(" "));
+        }while (nuevo.getNombre().equals(" ") || nuevo.getNombre().equals("") );
 
 
         do {
             System.out.println("introduce el apelido 1");
             nuevo.setApellido(scanner.nextLine().replaceAll("\\s+", " "));
-        }while (nuevo.getApellido().equals(" "));
+        }while (nuevo.getApellido().equals(" ") || nuevo.getApellido().equals(""));
 
 
         System.out.println("introduce el apellido 2, si no tiene introduzca un espacio en blanco");
@@ -141,7 +192,7 @@ public class ListaAtletas{
         do {
             System.out.println("introduce la nacionalidad con el codigo de 3 letras de su pais");
             nuevo.setNacionalidad(scanner.nextLine().replaceAll("\\s+", " "));
-        }while (nuevo.getNombre().equals(" ") || nuevo.getNacionalidad().length() > 4);
+        }while (nuevo.getNacionalidad().length() > 4 || nuevo.getNacionalidad().length() < 2);
 
         do {
             System.out.println("sexo del participante");
@@ -157,6 +208,7 @@ public class ListaAtletas{
 
         nuevo.setEdad(introducirEdad());
 
+        nuevo.getMarca().pedirTiempo();
 
 
         return nuevo;
@@ -173,6 +225,9 @@ public class ListaAtletas{
 
         Collections.sort(atletas );
 
+        mostrarAtletas();
+
+
     }
 
     /**
@@ -182,7 +237,96 @@ public class ListaAtletas{
 
         Collections.sort(atletas, new Atleta());
 
+        mostrarAtletas();
+
     }
+
+
+    /**
+     * calcula el tiempo de le leva al primero despues de pasar por la meta
+     * @param atleta se usa para coger el tiepo de cada atleta
+     * @return String donde mostramos la diferencia de tiempo
+     */
+    public String diferenciaMarca(Atleta atleta){
+
+        Marca diferencia = new Marca();
+
+        diferencia.setHoras(atleta.getMarca().getHoras() - mejorMarca().getHoras());
+
+
+        diferencia.setMin(atleta.getMarca().getMin() - mejorMarca().getMin());
+
+        diferencia.setSeg(atleta.getMarca().getSeg() - mejorMarca().getSeg());
+
+
+        if (diferencia.getMin() < 0){
+
+            diferencia.setHoras(diferencia.getHoras()-1);
+            diferencia.setMin(60+diferencia.getMin());
+
+        }
+
+
+        if (diferencia.getSeg() < 0){
+
+            diferencia.setMin(diferencia.getMin()-1);
+            diferencia.setSeg(60+diferencia.getSeg());
+
+        }
+
+        if ( diferencia.getHoras() == 0  && diferencia.getMin() == 0 && diferencia.getSeg() == 0 ){
+
+            return " ( Es la mejor marca )";
+
+
+        }else{
+
+            return " ( la diferencia con la mejor marca es = "+diferencia.getHoras() + ":" + diferencia.getMin() + ":" + diferencia.getSeg() +" )";
+
+        }
+
+
+    }
+
+
+
+    /**
+     * se encarga de guardar los datos en un fichero
+     */
+    public void guardarFichero(){
+
+        try {
+            ObjectOutputStream guardar = new ObjectOutputStream( new FileOutputStream("Maraton/Datos/atletas.dat"));
+            guardar.writeObject( atletas );
+            guardar.close();
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+        }catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    /**
+     * se encarga de cargar los valores del archivo
+     */
+    public void cargarFichero(){
+
+        try {
+            ObjectInputStream cargar = new ObjectInputStream( new FileInputStream( "Maraton/Datos/atletas.dat" ));
+            atletas =  (ArrayList<Atleta>) cargar.readObject();
+            cargar.close();
+        }catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }catch (FileNotFoundException e){
+            System.out.println("No hay valores en el fichero");
+            System.out.println("añada altetas o cree uno");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
 
 
 
@@ -276,6 +420,132 @@ public class ListaAtletas{
         }
 
     }
+
+
+    /**
+     * saca la marca meas pequeña en el array
+     * @return mejor de tipo Marca
+     */
+    private Marca mejorMarca(){
+
+
+        Marca  mejor = new Marca(24,60,60);
+
+        for (Atleta atleta:atletas) {
+
+
+            if (atleta.getMarca().getHoras() < mejor.getHoras()){
+
+                mejor = atleta.getMarca();
+
+            }else{
+
+                if (atleta.getMarca().getMin() < mejor.getMin()){
+
+                   mejor = atleta.getMarca();
+
+                }else{
+
+                    if (atleta.getMarca().getSeg() < mejor.getSeg()){
+
+                        mejor = atleta.getMarca();
+
+                    }
+                }
+
+            }
+
+
+
+        }
+
+        return mejor;
+
+    }
+
+
+    /**
+     * duplicamos el array de atletas y lo orena por marcas
+     * @return develve u narraylis de tipo atleta
+     */
+    private ArrayList<Atleta> duplicarArray(){
+
+
+        ArrayList<Atleta> duplicado = new ArrayList<>();
+
+
+        for (Atleta atleta: atletas) {
+
+            duplicado.add(atleta);
+
+        }
+
+
+        Collections.sort(duplicado);
+        return duplicado;
+
+
+
+    }
+
+    /**
+     * Se encarga de comparar los arrays y mirar si tienen la misma marca
+     * si es asi introducimos la posicion de en la que se encuartra el atleta
+     * @param pos
+     */
+    private void posicionGeneral(Atleta pos){
+
+
+       try {
+
+           int posiscion ;
+           for (int j = 0; j < duplicarArray().size(); j++) {
+
+               if (pos.getMarca() == duplicarArray().get(j).getMarca()){
+
+                   pos.setPosicionGeneral(j+1);
+
+               }
+
+
+
+           }
+
+       }catch (NullPointerException e) {
+           e.printStackTrace();
+       }
+
+
+
+    }
+
+
+    public int tamanoArray(){
+
+
+        return atletas.size();
+
+    }
+
+
+
+    /**
+     * recorre el arry y busca si hay un nulo y lo borra
+     */
+    private void borrarNull(){
+
+        Iterator<Atleta> itAtleta = atletas.iterator();
+
+//        for (Flight flight : flights) {
+        while( itAtleta.hasNext() ){
+            if( itAtleta.next() == null ){
+                itAtleta.remove();
+            }
+        }
+
+    }
+
+
 
 
 

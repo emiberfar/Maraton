@@ -1,14 +1,16 @@
 package com.company.Modelo;
 
-import java.util.Comparator;
-import java.util.Date;
-import java.util.Objects;
-import java.util.Scanner;
+import java.io.Serializable;
+import java.util.*;
 
 /**
  * Created by EBF10 on 14/06/2017.
  */
-public class Atleta implements Comparable<Atleta>,Comparator<Atleta> {
+
+public class Atleta implements Comparable<Atleta>,Comparator<Atleta>,Serializable {
+
+
+    private static final long serialVersionUID = -2196807447451158L;
 
     private String nombre;
     private String apellido;
@@ -19,8 +21,9 @@ public class Atleta implements Comparable<Atleta>,Comparator<Atleta> {
     private String club;
     private int edad;
     private String categoria;
+    private int posicionGeneral;
+    private int posicionCategoria;
     private Marca marca = new Marca();
-
 
     // constructor
 
@@ -192,8 +195,28 @@ public class Atleta implements Comparable<Atleta>,Comparator<Atleta> {
     }
 
 
-    //metodos
+    public Marca getMarca() {
+        return marca;
+    }
 
+    public int getPosicionGeneral() {
+        return posicionGeneral;
+    }
+
+    public void setPosicionGeneral(int posicionGeneral) {
+        this.posicionGeneral = posicionGeneral;
+    }
+
+    public int getPosicionCategoria() {
+        return posicionCategoria;
+    }
+
+    public void setPosicionCategoria(int posicionCategoria) {
+        this.posicionCategoria = posicionCategoria;
+    }
+
+
+    //metodos
 
 
     /**
@@ -203,17 +226,20 @@ public class Atleta implements Comparable<Atleta>,Comparator<Atleta> {
      */
     @Override
     public String toString() {
-        return "Atleta{" +
-                "nombre='" + getNombre() + '\'' +
-                ", apellido='" + getApellido() + " " + getApellido2() + " " + '\'' +
-                ", dorsal=" + getDorsal() +
-                ", sexo='" + getSexo() + '\'' +
-                ", nacionalidad='" + getNacionalidad() + '\'' +
-                ", club='" + getClub() + '\'' +
-                ", edad=" + getEdad() +
-                ", categoria='" + getCategoria() + '\'' +
-                ", marca='" + ((marca.getHoras() >= 6) ? "mas de 6 horas en la carrera":
-                    marca.toString());
+        return "***********************" + "\n"  +
+        "Atleta{" +
+                "nombre= " + getNombre() + "\n"  +
+                " apellido= " + getApellido() + " " + getApellido2() + " " + '\n' +
+                " dorsal= " + getDorsal() + '\n' +
+                " sexo= " + getSexo() + '\n' +
+                " nacionalidad= " + getNacionalidad() + '\n' +
+                " club= " + getClub() + '\n' +
+                " edad= " + getEdad() + '\n' +
+                " categoria= " + getCategoria() + '\n' +
+                " marca= " + ((marca.getHoras() >= 6) ? "mas de 6 horas en la carrera"+'\n' :
+                    marca.toString())+'\n'+
+                " posicion general= " + getPosicionGeneral() + '\n' +
+                 " posicion por categoria= " + getPosicionCategoria() + '\n' ;
     }
 
 
