@@ -158,7 +158,6 @@ public class StartApp {
             return scanner.nextInt();
 
         }catch (InputMismatchException e){
-            e.printStackTrace();
             inicioApp();
         }
         return 0;
@@ -198,11 +197,6 @@ public class StartApp {
                         listaAtletas.mostrarAtletas("super veterano");
                         break;
 
-
-
-
-
-
                 }
 
                 mostrarTareas();
@@ -215,6 +209,8 @@ public class StartApp {
             System.out.println("valores incorrectos");
             mostrarTareas();
 
+        }catch (InputMismatchException e){
+            inicioApp();
         }
 
 

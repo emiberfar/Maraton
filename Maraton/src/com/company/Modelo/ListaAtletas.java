@@ -47,9 +47,11 @@ public class ListaAtletas{
         borrarNull();
         for (Atleta atleta : atletas) {
 
+
+
             posicionGeneral(atleta);
 
-            System.out.println(atleta.toString() + diferenciaMarca(atleta) + "\n");
+            System.out.println(atleta.toString() + diferenciaMarca(atleta,atletas) + "\n");
 
 
         }
@@ -64,6 +66,8 @@ public class ListaAtletas{
 
         String sexo;
 
+        ArrayList<Atleta> posCat = new ArrayList<>();
+
         borrarNull();
 
         for (Atleta atleta: atletas) {
@@ -72,15 +76,21 @@ public class ListaAtletas{
 
             if ( atleta.getCategoria().toLowerCase().equals(categoria.toLowerCase() ) ) {
 
+
+                posicionCategoria(categoria);
+
                 System.out.println("introduzca masculino o femenino de pendiendo del sexo que quiera ver la calificafion");
                 System.out.println("sino escriba general");
                if ( atleta.getSexo().toLowerCase().equals( ( sexo = scanner.nextLine().toLowerCase().replaceAll("\\s+", " ") ) ) ){
 
-                   System.out.println(atleta.toString() + diferenciaMarca(atleta) + "\n");
+
+
+                   System.out.println(atleta.toString() + diferenciaMarca(atleta, atletas) + "\n" + posicionCategoria(categoria));
 
                }else if (sexo.equals("general")){
 
-                   System.out.println( atleta.toString() + diferenciaMarca( atleta ) + "\n" );
+                   System.out.println( atleta.toString() + diferenciaMarca( atleta, atletas )  + "\n" + posicionCategoria(categoria) );
+
 
                }
 
@@ -92,7 +102,7 @@ public class ListaAtletas{
     }
     /**
      * buaca un altleta a traves de su dorsal
-     * @return
+     * @return tipo Altleta
      */
     private int bucarAtleta(){
         Scanner scanner = new Scanner(System.in);
@@ -247,16 +257,16 @@ public class ListaAtletas{
      * @param atleta se usa para coger el tiepo de cada atleta
      * @return String donde mostramos la diferencia de tiempo
      */
-    public String diferenciaMarca(Atleta atleta){
+    public String diferenciaMarca(Atleta atleta, ArrayList<Atleta> marcas){
 
         Marca diferencia = new Marca();
 
-        diferencia.setHoras(atleta.getMarca().getHoras() - mejorMarca().getHoras());
+        diferencia.setHoras(atleta.getMarca().getHoras() - mejorMarca(marcas).getHoras());
 
 
-        diferencia.setMin(atleta.getMarca().getMin() - mejorMarca().getMin());
+        diferencia.setMin(atleta.getMarca().getMin() - mejorMarca(marcas).getMin());
 
-        diferencia.setSeg(atleta.getMarca().getSeg() - mejorMarca().getSeg());
+        diferencia.setSeg(atleta.getMarca().getSeg() - mejorMarca(marcas).getSeg());
 
 
         if (diferencia.getMin() < 0){
@@ -426,12 +436,12 @@ public class ListaAtletas{
      * saca la marca meas pequeña en el array
      * @return mejor de tipo Marca
      */
-    private Marca mejorMarca(){
+    private Marca mejorMarca(ArrayList<Atleta> atle){
 
 
         Marca  mejor = new Marca(24,60,60);
 
-        for (Atleta atleta:atletas) {
+        for (Atleta atleta:atle) {
 
 
             if (atleta.getMarca().getHoras() < mejor.getHoras()){
@@ -519,7 +529,10 @@ public class ListaAtletas{
 
     }
 
-
+    /**
+     * devuelve el tamaño del array
+     * @return numero de elementos que tiene el array
+     */
     public int tamanoArray(){
 
 
@@ -536,7 +549,6 @@ public class ListaAtletas{
 
         Iterator<Atleta> itAtleta = atletas.iterator();
 
-//        for (Flight flight : flights) {
         while( itAtleta.hasNext() ){
             if( itAtleta.next() == null ){
                 itAtleta.remove();
@@ -546,8 +558,41 @@ public class ListaAtletas{
     }
 
 
+    private String posicionCategoria( String cat){
 
 
+         ArrayList<Atleta> posCat = new ArrayList<>();
 
+        for (int i = 0; i < atletas.size(); i++) {
+
+            if (atletas.get(i).getCategoria().toLowerCase().equals(cat.toLowerCase())){
+
+
+                posCat.add(atletas.get(i));
+
+            }
+
+        }
+
+
+        mejorMarca(posCat);
+        for (int i = 0; i < posCat.size() ; i++) {
+
+            posCat.get(i).setPosicionCategoria(i+1);
+
+            if ( diferenciaMarca(posCat.get(i), posCat).equals(" ( Es la mejor marca )")){
+
+                return diferenciaMarca(posCat.get(i), posCat) + " de la categoria";
+
+            }else {
+
+                return diferenciaMarca(posCat.get(i), posCat) + "  ";
+
+            }
+
+        }
+
+        return " no va ";
+    }
 
 }
