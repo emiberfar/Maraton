@@ -236,7 +236,7 @@ public class Atleta implements Comparable<Atleta>,Comparator<Atleta>,Serializabl
                 " club= " + getClub() + '\n' +
                 " edad= " + getEdad() + '\n' +
                 " categoria= " + getCategoria() + '\n' +
-                " marca= " + ((marca.getHoras() >= 6) ? "mas de 6 horas en la carrera"+'\n' :
+                " marca= " + ((marca.getHoras() >= 6 ) ? "mas de 6 horas en la carrera"+'\n' :
                     marca.toString())+'\n'+
                 " posicion general= " + getPosicionGeneral() + '\n' +
                  " posicion por categoria= " + getPosicionCategoria() + '\n' ;

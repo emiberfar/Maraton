@@ -29,7 +29,7 @@ public class ListaAtletas{
 
         borrarNull();
 
-        atletas.add(new Atleta("pepe", "rodrigez", "fernandez",7 , "masculino","esl","corre forest corre", 26,3,25,42));
+        atletas.add(new Atleta("pepe", "rodrigez", "fernandez",7 , "masculino","esl","corre forest corre", 26,0,25,42));
         atletas.add(new Atleta("robeto", "lopo", "",4 , "masculino","esl","corre forest corre", 27,2,25,42));
         atletas.add(new Atleta("manolo", "figueroa", "valuarte",795 , "masculino","esp","tu fast tu furious", 18,4,35,10));
         atletas.add(new Atleta("ana", "lopez", "mascaro",123 , "femenino","usa","gran turismo", 42,4,6,25));
@@ -118,7 +118,7 @@ public class ListaAtletas{
 
         try {
 
-            System.out.println("dorsal del atleta que quiere buscar");
+
             buscar.setDorsal(scanner.nextInt());
 
             return atletas.indexOf(buscar);
@@ -139,6 +139,7 @@ public class ListaAtletas{
      */
     public void borrarAtleta(){
 
+        System.out.println("dorsal del atleta que quiere borrar");
         atletas.remove(bucarAtleta());
 
 
@@ -152,6 +153,8 @@ public class ListaAtletas{
      */
     public void editarAtleta() {
 
+        System.out.println("dorsal del atleta que quiere editar");
+
         atletas.set(bucarAtleta(),recienIscrito());
 
         borrarNull();
@@ -162,6 +165,8 @@ public class ListaAtletas{
      * busca el atleta en el array dependiendo del dorsal
      */
     public void buscarAtletaPedido() {
+
+        System.out.println("dorsal del atleta que quiere buscar");
 
         Atleta buscar = atletas.get(bucarAtleta());
 
@@ -254,7 +259,7 @@ public class ListaAtletas{
     }
 
     /**
-     * ordena por las mejor marca realizada de menos tiempo a mas
+     * ordena por las mejor marca realizada de menos tiempo a mas tiempo
      */
     public void ordenarMarcas(){
 
@@ -317,6 +322,11 @@ public class ListaAtletas{
         if ( diferencia.getHoras() == 0  && diferencia.getMin() == 0 && diferencia.getSeg() == 0 ){
 
             return " ( Es la mejor marca )";
+
+
+        }else if(diferencia.getHoras() >=23) {
+
+            return " descalificado por doping";
 
 
         }else{
@@ -414,8 +424,8 @@ public class ListaAtletas{
     }
 
     /**
-     * controlamos que el dorsal no este repetido
-     * @param dorsal
+     * controlamos que el dorsal no este repetido y si lo esta no lo vuelve a pedir
+     * @param dorsal es un entero el cual corresponde al dorsal que queremos del atleta
      * @return un falso si no esta repetid y un verrdadero si esta repetido
      */
     private boolean dorsalDuplicado(int dorsal) {
@@ -468,7 +478,11 @@ public class ListaAtletas{
      */
     private Marca mejorMarca(){
 
+        if (duplicarArray().get(0).getMarca().getHoras() == 0){
 
+            duplicarArray().get(0).getMarca().setHoras(24);
+
+        }
 
         return duplicarArray().get(0).getMarca();
 
@@ -502,7 +516,7 @@ public class ListaAtletas{
     /**
      * Se encarga de comparar los arrays y mirar si tienen la misma marca
      * si es asi introducimos la posicion de en la que se encuartra el atleta
-     * @param pos
+     * @param pos es de tipo Atleta que usamos para saber su posicion
      */
     private void posicionGeneral(Atleta pos){
 
@@ -621,7 +635,11 @@ public class ListaAtletas{
     }
 
 
-
+    /**
+     * calculaos la merjor marca de la categoria añadiendo del ArrayList de atletas a todos aqulleos que tengan la misma categoria
+     * @param marcas es un ArrayList que le pasamos
+     * @return la mejor marca del array list de marcas
+     */
     private Marca mejorMarcaCategoria(ArrayList<Atleta> marcas){
 
 
@@ -629,6 +647,12 @@ public class ListaAtletas{
         Marca mejorCat = new Marca();
 
         Collections.sort(marcas);
+
+        if (duplicarArray().get(0).getMarca().getHoras() == 0){
+
+            duplicarArray().get(0).getMarca().setHoras(24);
+
+        }
 
         mejorCat = marcas.get(0).getMarca();
 

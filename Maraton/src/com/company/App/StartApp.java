@@ -56,7 +56,7 @@ public class StartApp {
             return scanner.nextInt();
 
         }catch (InputMismatchException e){
-            e.printStackTrace();
+            System.out.println("introduzca numeros solo");
             inicioApp();
         }
         return 0;
@@ -158,7 +158,7 @@ public class StartApp {
             return scanner.nextInt();
 
         }catch (InputMismatchException e){
-            inicioApp();
+            mostrar();
         }
         return 0;
     }
@@ -199,18 +199,14 @@ public class StartApp {
 
                 }
 
-                inicioApp();
+                mostrar();
         }
-
-
-
-
         }catch (NullPointerException e){
             System.out.println("valores incorrectos");
-           inicioApp();
+           mostrar();
 
         }catch (InputMismatchException e){
-            inicioApp();
+            mostrar();
         }
 
 
