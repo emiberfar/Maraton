@@ -12,5 +12,12 @@ public class Main {
 
         inicio.inicioApp();
 
+
+
+//        ListaAtletas a = new ListaAtletas();
+//
+//        a.introducirAtletasInscritos();
+//
+//        a.ordenarMarcas();
     }
 }

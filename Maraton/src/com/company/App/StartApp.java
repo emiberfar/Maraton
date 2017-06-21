@@ -199,7 +199,7 @@ public class StartApp {
 
                 }
 
-                mostrarTareas();
+                inicioApp();
         }
 
 
@@ -207,7 +207,7 @@ public class StartApp {
 
         }catch (NullPointerException e){
             System.out.println("valores incorrectos");
-            mostrarTareas();
+           inicioApp();
 
         }catch (InputMismatchException e){
             inicioApp();

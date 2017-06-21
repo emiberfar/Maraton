@@ -30,6 +30,7 @@ public class ListaAtletas{
         borrarNull();
 
         atletas.add(new Atleta("pepe", "rodrigez", "fernandez",7 , "masculino","esl","corre forest corre", 26,3,25,42));
+        atletas.add(new Atleta("robeto", "lopo", "",4 , "masculino","esl","corre forest corre", 27,2,25,42));
         atletas.add(new Atleta("manolo", "figueroa", "valuarte",795 , "masculino","esp","tu fast tu furious", 18,4,35,10));
         atletas.add(new Atleta("ana", "lopez", "mascaro",123 , "femenino","usa","gran turismo", 42,4,6,25));
         atletas.add(new Atleta("pepa", "martinez", "flor",2369 , "femenino","and","need for speed", 58,1,8,59));
@@ -40,8 +41,8 @@ public class ListaAtletas{
 
 
     /**
-         * muestra los atletas que estan el array
-         */
+     * muestra el atleta pedido
+     */
     public void mostrarAtletas() {
 
         borrarNull();
@@ -51,7 +52,11 @@ public class ListaAtletas{
 
             posicionGeneral(atleta);
 
-            System.out.println(atleta.toString() + diferenciaMarca(atleta,atletas) + "\n");
+            posicionCategoria(atleta,atleta.getCategoria());
+
+
+
+            System.out.println(atleta.toString() + diferenciaMarca(atleta, mejorMarca()) + "\n" + posicionCategoria(atleta,atleta.getCategoria().toLowerCase()));
 
 
         }
@@ -64,9 +69,10 @@ public class ListaAtletas{
 
         Scanner scanner = new Scanner(System.in);
 
-        String sexo;
+        System.out.println("introduzca masculino o femenino de pendiendo del sexo que quiera ver la calificafion");
+        System.out.println("sino escriba general");
 
-        ArrayList<Atleta> posCat = new ArrayList<>();
+        String sexo = scanner.nextLine().toLowerCase().replaceAll("\\s+", " ");
 
         borrarNull();
 
@@ -74,22 +80,23 @@ public class ListaAtletas{
 
             posicionGeneral(atleta);
 
+
+
+
+                posicionCategoria( atleta ,categoria.toLowerCase());
+
+
+
             if ( atleta.getCategoria().toLowerCase().equals(categoria.toLowerCase() ) ) {
-
-
-                posicionCategoria(categoria);
-
-                System.out.println("introduzca masculino o femenino de pendiendo del sexo que quiera ver la calificafion");
-                System.out.println("sino escriba general");
-               if ( atleta.getSexo().toLowerCase().equals( ( sexo = scanner.nextLine().toLowerCase().replaceAll("\\s+", " ") ) ) ){
+               if ( atleta.getSexo().toLowerCase().equals( ( sexo  ) ) ){
 
 
 
-                   System.out.println(atleta.toString() + diferenciaMarca(atleta, atletas) + "\n" + posicionCategoria(categoria));
+                   System.out.println(atleta.toString() + diferenciaMarca(atleta, mejorMarca()) + "\n" + posicionCategoria( atleta ,categoria.toLowerCase()));
 
                }else if (sexo.equals("general")){
 
-                   System.out.println( atleta.toString() + diferenciaMarca( atleta, atletas )  + "\n" + posicionCategoria(categoria) );
+                   System.out.println( atleta.toString() + diferenciaMarca( atleta ,mejorMarca() )  + "\n" + posicionCategoria(atleta , categoria.toLowerCase()) );
 
 
                }
@@ -152,12 +159,30 @@ public class ListaAtletas{
     }
 
     /**
-     * busca el atleta en el array
+     * busca el atleta en el array dependiendo del dorsal
      */
-    public void buscarAtletaPedido(){
+    public void buscarAtletaPedido() {
 
-        System.out.println(atletas.get(bucarAtleta()));
+        Atleta buscar = atletas.get(bucarAtleta());
 
+
+        borrarNull();
+        for (Atleta atleta : atletas) {
+
+
+            posicionGeneral(atleta);
+
+            posicionCategoria(atleta, atleta.getCategoria());
+
+            if (buscar == atleta) {
+
+                System.out.println(atleta.toString() +
+                        diferenciaMarca(atleta , mejorMarca()) + "\n" +
+                        posicionCategoria(atleta, atleta.getCategoria()));
+
+
+            }
+        }
     }
 
 
@@ -233,7 +258,7 @@ public class ListaAtletas{
      */
     public void ordenarMarcas(){
 
-        Collections.sort(atletas );
+        Collections.sort( atletas );
 
         mostrarAtletas();
 
@@ -245,7 +270,7 @@ public class ListaAtletas{
      */
     public void ordenarDorsal(){
 
-        Collections.sort(atletas, new Atleta());
+        Collections.sort( atletas, new Atleta());
 
         mostrarAtletas();
 
@@ -257,16 +282,21 @@ public class ListaAtletas{
      * @param atleta se usa para coger el tiepo de cada atleta
      * @return String donde mostramos la diferencia de tiempo
      */
-    public String diferenciaMarca(Atleta atleta, ArrayList<Atleta> marcas){
+    public String diferenciaMarca(Atleta atleta, Marca marcaMejor){
+
 
         Marca diferencia = new Marca();
 
-        diferencia.setHoras(atleta.getMarca().getHoras() - mejorMarca(marcas).getHoras());
+        Marca mejor;
+
+        mejor=marcaMejor;
+
+        diferencia.setHoras(atleta.getMarca().getHoras() - mejor.getHoras());
 
 
-        diferencia.setMin(atleta.getMarca().getMin() - mejorMarca(marcas).getMin());
+        diferencia.setMin(atleta.getMarca().getMin() - mejor.getMin());
 
-        diferencia.setSeg(atleta.getMarca().getSeg() - mejorMarca(marcas).getSeg());
+        diferencia.setSeg(atleta.getMarca().getSeg() - mejor.getSeg());
 
 
         if (diferencia.getMin() < 0){
@@ -436,40 +466,11 @@ public class ListaAtletas{
      * saca la marca meas pequeña en el array
      * @return mejor de tipo Marca
      */
-    private Marca mejorMarca(ArrayList<Atleta> atle){
-
-
-        Marca  mejor = new Marca(24,60,60);
-
-        for (Atleta atleta:atle) {
-
-
-            if (atleta.getMarca().getHoras() < mejor.getHoras()){
-
-                mejor = atleta.getMarca();
-
-            }else{
-
-                if (atleta.getMarca().getMin() < mejor.getMin()){
-
-                   mejor = atleta.getMarca();
-
-                }else{
-
-                    if (atleta.getMarca().getSeg() < mejor.getSeg()){
-
-                        mejor = atleta.getMarca();
-
-                    }
-                }
-
-            }
+    private Marca mejorMarca(){
 
 
 
-        }
-
-        return mejor;
+        return duplicarArray().get(0).getMarca();
 
     }
 
@@ -505,13 +506,16 @@ public class ListaAtletas{
      */
     private void posicionGeneral(Atleta pos){
 
+        ArrayList<Atleta> copia;
+
+        copia = duplicarArray();
 
        try {
 
-           int posiscion ;
-           for (int j = 0; j < duplicarArray().size(); j++) {
 
-               if (pos.getMarca() == duplicarArray().get(j).getMarca()){
+           for (int j = 0; j < copia.size(); j++) {
+
+               if (pos.getMarca() == copia.get(j).getMarca()){
 
                    pos.setPosicionGeneral(j+1);
 
@@ -557,42 +561,81 @@ public class ListaAtletas{
 
     }
 
+    /**
+     * posicion por categoria donde utilizamos un array con los atletas de ccada categria y sacamos su posicion y la diferencia de tiempo con las marcas
+     * @param cat la categoria que queremos pasarle
+     * @return la informacion del atleta de su categoria
+     */
+    private String posicionCategoria( Atleta atleta ,String cat){
 
-    private String posicionCategoria( String cat){
+        ArrayList<Atleta> posicion;
 
-
-         ArrayList<Atleta> posCat = new ArrayList<>();
-
-        for (int i = 0; i < atletas.size(); i++) {
-
-            if (atletas.get(i).getCategoria().toLowerCase().equals(cat.toLowerCase())){
-
-
-                posCat.add(atletas.get(i));
-
-            }
-
-        }
+        posicion = arrayPosicion(cat);
 
 
-        mejorMarca(posCat);
-        for (int i = 0; i < posCat.size() ; i++) {
 
-            posCat.get(i).setPosicionCategoria(i+1);
 
-            if ( diferenciaMarca(posCat.get(i), posCat).equals(" ( Es la mejor marca )")){
 
-                return diferenciaMarca(posCat.get(i), posCat) + " de la categoria";
+        for (int i = 0; i < posicion.size() ; i++) {
 
-            }else {
 
-                return diferenciaMarca(posCat.get(i), posCat) + "  ";
+                if (atleta.equals(posicion.get(i))) {
 
-            }
+                    posicion.get(i).setPosicionCategoria(i + 1);
+
+
+                    return diferenciaMarca(posicion.get(i), mejorMarcaCategoria(posicion)) + " de la categoria ";
+
+                }
+
 
         }
 
         return " no va ";
     }
+
+
+    /**
+     * introducimos todos los atletas dentro de un array por categorias
+     * @param categoria String el cual pasa las categorias
+     * @return ArrayList de Atletas con los atletas de la ccategoria
+     */
+    private ArrayList<Atleta> arrayPosicion(String categoria){
+
+
+        ArrayList<Atleta> posCat = new ArrayList<>();
+
+        for (Atleta atleta: atletas
+             ) {
+
+            if (atleta.getCategoria().toLowerCase().equals(categoria.toLowerCase())){
+                posCat.add(atleta);
+            }
+
+        }
+
+        Collections.sort( posCat );
+
+        return posCat;
+
+    }
+
+
+
+    private Marca mejorMarcaCategoria(ArrayList<Atleta> marcas){
+
+
+
+        Marca mejorCat = new Marca();
+
+        Collections.sort(marcas);
+
+        mejorCat = marcas.get(0).getMarca();
+
+
+
+        return mejorCat;
+    }
+
 
 }

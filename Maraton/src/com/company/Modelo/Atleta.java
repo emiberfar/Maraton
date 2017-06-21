@@ -278,6 +278,12 @@ public class Atleta implements Comparable<Atleta>,Comparator<Atleta>,Serializabl
         return Objects.equals(j.getDorsal(),this.getDorsal());
     }
 
+    /**
+     *
+     * compara las marcas de cada Atleta buscadon la ms baja
+     * @param o Objecto de tipo Atleta
+     * @return un -1 si es menor, un 1 si es mayor y un 0 si es igual
+     */
     @Override
     public int compareTo(Atleta o) {
 
