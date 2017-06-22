@@ -112,25 +112,46 @@ public class ListaAtletas{
      * @return tipo Altleta
      */
     private int bucarAtleta(){
+
         Scanner scanner = new Scanner(System.in);
 
         Atleta buscar = new Atleta(0);
 
         try {
 
+            int dorsalBuscar = scanner.nextInt();
 
-            buscar.setDorsal(scanner.nextInt());
+            buscar.setDorsal(dorsalBuscar);
 
-            return atletas.indexOf(buscar);
+            if (dorsalDuplicado(dorsalBuscar)) {
+
+                return atletas.indexOf(buscar);
+
+            }else{
+
+                System.out.println("El atleta que busca no esta inscrito");
+
+                System.out.println("introduzca uno que si lo este");
+
+                bucarAtleta();
+            }
+
         }catch (InputMismatchException e){
+
             bucarAtleta();
-            return -1;
+
         }catch (NullPointerException e){
+
             bucarAtleta();
-            return -1;
+
+        }catch (ArrayIndexOutOfBoundsException e){
+
+            bucarAtleta();
+
+
         }
 
-
+        return -1;
 
     }
 
@@ -155,7 +176,15 @@ public class ListaAtletas{
 
         System.out.println("dorsal del atleta que quiere editar");
 
-        atletas.set(bucarAtleta(),recienIscrito());
+        int atleta;
+        if ((atleta  = bucarAtleta()) < atletas.size()) {
+
+            atletas.set(atleta, recienIscrito());
+
+        }else{
+            editarAtleta();
+
+        }
 
         borrarNull();
         guardarFichero();

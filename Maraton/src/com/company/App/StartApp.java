@@ -45,7 +45,7 @@ public class StartApp {
             System.out.println("*  6 - elimina atleta                *");
             System.out.println("*  7 - actualizar fichero            *");
             System.out.println("*  8 - buscar por dorsal             *");
-            System.out.println("*  9 - editar atleta                *");
+            System.out.println("*  9 - editar atleta                 *");
         }
         System.out.println("*  0 - Salir                         *");
         System.out.println("**************************************");
@@ -127,6 +127,10 @@ public class StartApp {
         } catch (NullPointerException e) {
             System.out.println("introduzca los valores correctos");
             inicioApp();
+        }catch (ArrayIndexOutOfBoundsException e){
+
+            inicioApp();
+
         }
     }
 
